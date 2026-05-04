@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
-// CREDENCIALES DE WILLIAM - YA ESTÁN LISTAS
-const supabaseUrl = "https://vflderqgiffnngrnvmng.supabase.co";
+const supabaseUrl = "https://vfldrqgigffnngrnvmng.supabase.co";
 const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmbGRycWdpZ2Zmbm5ncm52bW5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MzcyMjUsImV4cCI6MjA5MzQxMzIyNX0.oSeEPjz9-HmM8r9lIQ26JuHYuTWbViJB7xor6xdtCIM";
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -55,6 +54,7 @@ export default function Home() {
       console.error('ERROR SUPABASE:', error);
       setEquipos([]);
     } else {
+      console.log('EQUIPOS CARGADOS:', data);
       setEquipos(data || []);
     }
     setCargando(false);
@@ -83,7 +83,7 @@ export default function Home() {
               onClick={() => setCompeticion(c)}
               className={`px-6 py-2 rounded-lg font-bold text-lg transition-all ${
                 competicion === c
-                ? "bg-white text-red-700 scale-105 shadow-lg"
+               ? "bg-white text-red-700 scale-105 shadow-lg"
                   : "bg-red-800 text-white hover:bg-red-700"
               }`}
             >
@@ -99,7 +99,7 @@ export default function Home() {
               onClick={() => setCategoria(c)}
               className={`px-6 py-2 rounded-lg font-bold text-lg transition-all ${
                 categoria === c
-                ? "bg-white text-red-700 scale-105 shadow-lg"
+               ? "bg-white text-red-700 scale-105 shadow-lg"
                   : "bg-red-800 text-white hover:bg-red-700"
               }`}
             >
@@ -116,7 +116,7 @@ export default function Home() {
                 onClick={() => setSerie(s)}
                 className={`px-6 py-2 rounded-lg font-bold text-lg transition-all ${
                   serie === s
-                  ? "bg-white text-red-700 scale-105 shadow-lg"
+                 ? "bg-white text-red-700 scale-105 shadow-lg"
                     : "bg-red-800 text-white hover:bg-red-700"
                 }`}
               >
