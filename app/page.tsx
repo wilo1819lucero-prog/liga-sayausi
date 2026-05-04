@@ -4,11 +4,11 @@ import Image from 'next/image'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-// URL CORREGIDA - ESTA ES LA QUE SALE EN TU PÁGINA VERDE
-const supabase = createClient(
-  'https://vfldragjgffnngnvmng.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmbGRyYWdqZ3Jmbm5nbnZtbnZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5ODkzODMsImV4cCI6MjA2MDU2NTM4M30.nDy3gX4HwQJ8CbPxlfgo20ZgOZpmMWWS-IzQps5f1Sw'
-)
+// REEMPLAZA ESTAS 2 LÍNEAS CON TUS DATOS REALES DE SUPABASE → SETTINGS → API
+const supabaseUrl = 'TU_URL_AQUI'
+const supabaseKey = 'TU_KEY_AQUI'
+
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 type Equipo = {
   id: number
@@ -98,7 +98,7 @@ export default async function Home() {
                   {error ? (
                     <tr>
                       <td colSpan={11} className="p-6 text-center text-red-500">
-                        Error: {error.message}
+                        Error de Supabase: {error.message}
                       </td>
                     </tr>
                   ) : equipos && equipos.length > 0 ? (
