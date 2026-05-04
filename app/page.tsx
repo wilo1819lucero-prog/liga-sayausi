@@ -60,13 +60,22 @@ export default async function Home() {
             <button className="bg-red-700 text-white px-5 py-2 rounded-lg text-sm font-semibold border-2 border-red-600">
               Competicion
             </button>
+            <button className="bg-gray-800 border border-gray-700 px-5 py-2 rounded-lg text-sm hover:border-red-700 transition">
+              Goleadores
+            </button>
+            <button className="bg-gray-800 border border-gray-700 px-5 py-2 rounded-lg text-sm hover:border-red-700 transition">
+              Equipos
+            </button>
+            <button className="bg-gray-800 border border-gray-700 px-5 py-2 rounded-lg text-sm hover:border-red-700 transition">
+              Sanciones
+            </button>
           </div>
 
-          {/* Tabla de Posiciones CON DATOS REALES */}
+          {/* Tabla de Posiciones EN VIVO */}
           <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-2xl font-bold text-white">Tabla de Posiciones</h3>
-              <span className="bg-green-600 px-3 py-1 rounded text-xs font-bold">EN VIVO DESDE SUPABASE</span>
+              <span className="bg-green-600 px-3 py-1 rounded text-xs font-bold">EN VIVO</span>
             </div>
             
             <div className="overflow-x-auto">
@@ -74,6 +83,7 @@ export default async function Home() {
                 <thead>
                   <tr className="bg-red-700 text-white">
                     <th className="p-3 text-left rounded-tl-lg">Pos</th>
+                    <th className="p-3 text-left">Escudo</th>
                     <th className="p-3 text-left">Equipo</th>
                     <th className="p-3 text-center">PJ</th>
                     <th className="p-3 text-center">PG</th>
@@ -90,6 +100,21 @@ export default async function Home() {
                     equipos.map((equipo, index) => (
                       <tr key={equipo.id} className="border-b border-gray-800 hover:bg-red-900/20 transition">
                         <td className="p-3 font-bold text-red-500">{index + 1}</td>
+                        <td className="p-3">
+                          {equipo.logo_url ? (
+                            <Image 
+                              src={equipo.logo_url} 
+                              alt={equipo.nombre}
+                              width={32}
+                              height={32}
+                              className="rounded-full bg-white object-contain"
+                            />
+                          ) : (
+                            <div className="w-8 h-8 bg-red-700 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                              {equipo.nombre.charAt(0)}
+                            </div>
+                          )}
+                        </td>
                         <td className="p-3 font-semibold text-white">{equipo.nombre}</td>
                         <td className="p-3 text-center">{equipo.pj}</td>
                         <td className="p-3 text-center">{equipo.pg}</td>
@@ -103,8 +128,8 @@ export default async function Home() {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={10} className="p-6 text-center text-gray-500">
-                        Cargando equipos desde Supabase...
+                      <td colSpan={11} className="p-6 text-center text-gray-500">
+                        No hay equipos registrados
                       </td>
                     </tr>
                   )}
