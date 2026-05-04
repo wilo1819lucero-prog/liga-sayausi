@@ -7,11 +7,15 @@ const supabase = createClient(
 )
 
 export default async function Home() {
-  // Traemos los equipos ordenados por puntos de mayor a menor
-  const { data: equipos } = await supabase
+  // Traemos los equipos desde Supabase ordenados por puntos
+  const { data: equipos, error } = await supabase
     .from('equipos')
     .select('*')
     .order('puntos', { ascending: false })
+
+  if (error) {
+    console.error('Error de Supabase:', error)
+  }
 
   return (
     <main className="min-h-screen bg-gray-950 text-gray-100">
@@ -58,11 +62,11 @@ export default async function Home() {
             </button>
           </div>
 
-          {/* Tabla de Posiciones CON DATOS REALES DE SUPABASE */}
+          {/* Tabla de Posiciones CON DATOS REALES */}
           <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-2xl font-bold text-white">Tabla de Posiciones</h3>
-              <span className="bg-green-600 px-3 py-1 rounded text-xs font-bold">EN VIVO</span>
+              <span className="bg-green-600 px-3 py-1 rounded text-xs font-bold">EN VIVO DESDE SUPABASE</span>
             </div>
             
             <div className="overflow-x-auto">
@@ -77,23 +81,33 @@ export default async function Home() {
                     <th className="p-3 text-center">PP</th>
                     <th className="p-3 text-center">GF</th>
                     <th className="p-3 text-center">GC</th>
+                    <th className="p-3 text-center">DG</th>
                     <th className="p-3 text-center rounded-tr-lg">Pts</th>
                   </tr>
                 </thead>
                 <tbody className="text-gray-300">
-                  {equipos?.map((equipo, index) => (
-                    <tr key={equipo.id} className="border-b border-gray-800 hover:bg-red-900/20 transition">
-                      <td className="p-3 font-bold text-red-500">{index + 1}</td>
-                      <td className="p-3 font-semibold text-white">{equipo.nombre}</td>
-                      <td className="p-3 text-center">{equipo.pj}</td>
-                      <td className="p-3 text-center">{equipo.pg}</td>
-                      <td className="p-3 text-center">{equipo.pe}</td>
-                      <td className="p-3 text-center">{equipo.pp}</td>
-                      <td className="p-3 text-center">{equipo.gf}</td>
-                      <td className="p-3 text-center">{equipo.gc}</td>
-                      <td className="p-3 text-center font-bold text-white">{equipo.puntos}</td>
+                  {equipos && equipos.length > 0 ? (
+                    equipos.map((equipo, index) => (
+                      <tr key={equipo.id} className="border-b border-gray-800 hover:bg-red-900/20 transition">
+                        <td className="p-3 font-bold text-red-500">{index + 1}</td>
+                        <td className="p-3 font-semibold text-white">{equipo.nombre}</td>
+                        <td className="p-3 text-center">{equipo.pj}</td>
+                        <td className="p-3 text-center">{equipo.pg}</td>
+                        <td className="p-3 text-center">{equipo.pe}</td>
+                        <td className="p-3 text-center">{equipo.pp}</td>
+                        <td className="p-3 text-center">{equipo.gf}</td>
+                        <td className="p-3 text-center">{equipo.gc}</td>
+                        <td className="p-3 text-center">{equipo.gf - equipo.gc}</td>
+                        <td className="p-3 text-center font-bold text-white">{equipo.puntos}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={10} className="p-6 text-center text-gray-500">
+                        Cargando equipos desde Supabase...
+                      </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>
