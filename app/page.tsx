@@ -3,8 +3,8 @@ import Image from 'next/image'
 export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50">
-      {/* Encabezado con logo */}
-      <header className="bg-green-700 text-white p-6 shadow-lg">
+      {/* Encabezado ROJO */}
+      <header className="bg-red-700 text-white p-6 shadow-lg">
         <div className="max-w-6xl mx-auto flex items-center gap-4">
           <Image 
             src="/logo.jpeg" 
@@ -16,7 +16,7 @@ export default function Home() {
           />
           <div>
             <h1 className="text-3xl font-bold">LIGA DEPORTIVA SAYAUSI</h1>
-            <p className="text-green-100 mt-1">FUTBOL, UNION Y COMUNIDAD</p>
+            <p className="text-red-100 mt-1">FUTBOL, UNION Y COMUNIDAD</p>
           </div>
         </div>
       </header>
@@ -24,10 +24,10 @@ export default function Home() {
       {/* Menu */}
       <nav className="bg-white border-b">
         <div className="max-w-6xl mx-auto flex gap-6 p-4">
-          <a href="#" className="font-semibold text-green-700">INICIO</a>
-          <a href="#" className="text-gray-600 hover:text-green-700">EQUIPOS</a>
-          <a href="#" className="text-gray-600 hover:text-green-700">TABLA</a>
-          <a href="#" className="text-gray-600 hover:text-green-700">CALENDARIO</a>
+          <a href="#" className="font-semibold text-red-700">INICIO</a>
+          <a href="#" className="text-gray-600 hover:text-red-700">EQUIPOS</a>
+          <a href="#" className="text-gray-600 hover:text-red-700">TABLA</a>
+          <a href="#" className="text-gray-600 hover:text-red-700">CALENDARIO</a>
         </div>
       </nav>
 
@@ -40,7 +40,7 @@ export default function Home() {
           <p className="text-gray-600">
             PROXIMAMENTE AQUI VERAS LOS EQUIPOS, RESULTADOS Y TABLA DE POSICIONES.
           </p>
-          <div className="mt-6 text-sm text-green-700 font-mono">
+          <div className="mt-6 text-sm text-red-700 font-mono">
             ✅ CONECTADO A SUPABASE: VFLDRAGJGFFNNGNVMNG
           </div>
         </div>
