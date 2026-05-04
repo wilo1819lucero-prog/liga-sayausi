@@ -1,7 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import Image from 'next/image'
 
-// Esto forza a Vercel a consultar Supabase en cada visita - SIN CACHE
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
@@ -29,7 +28,6 @@ export default async function Home() {
     .select('*')
     .order('puntos', { ascending: false })
 
-  // Si hay error de Supabase, lo mostramos en consola
   if (error) {
     console.error('Error de Supabase:', error)
   }
