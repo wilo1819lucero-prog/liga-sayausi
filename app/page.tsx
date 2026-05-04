@@ -1,159 +1,181 @@
-import { createClient } from '@supabase/supabase-js'
-import Image from 'next/image'
+"use client";
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+import { useEffect, useState } from "react";
+import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
-  'https://vfldrqgigffnngrnvmng.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmbGRycWdpZ2Zmbm5ncm52bW5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MzcyMjUsImV4cCI6MjA5MzQxMzIyNX0.oSeEPjz9-HmM8r9lIQ26JuHYuTWbViJB7xor6xdtCIM'
-)
+  "https://TU_PROYECTO.supabase.co",
+  "TU_ANON_KEY"
+);
 
 type Equipo = {
-  id: number
-  nombre: string
-  logo_url: string | null
-  pj: number
-  pg: number
-  pe: number
-  pp: number
-  gf: number
-  gc: number
-  puntos: number
-}
+  id: number;
+  nombre: string;
+  competicion: string;
+  categoria: string;
+  serie: string;
+  pj: number;
+  pg: number;
+  pe: number;
+  pp: number;
+  gf: number;
+  gc: number;
+  puntos: number;
+};
 
-export default async function Home() {
-  const { data: equipos, error } = await supabase
-    .from('equipos')
-    .select('*')
-    .order('puntos', { ascending: false })
+export default function Home() {
+  const [equipos, setEquipos] = useState<Equipo[]>([]);
+  const [competicion, setCompeticion] = useState("LIGA");
+  const [categoria, setCategoria] = useState("VARONES");
+  const [serie, setSerie] = useState("A");
 
-  if (error) {
-    console.error('Error Supabase:', error)
+  useEffect(() => {
+    cargarEquipos();
+  }, [competicion, categoria, serie]);
+
+  async function cargarEquipos() {
+    let query = supabase
+     .from("equipos")
+     .select("*")
+     .eq("competicion", competicion)
+     .eq("categoria", categoria);
+
+    // Solo VARONES tiene series A, B, C. DAMAS y MASTER usan UNICA
+    if (categoria === "VARONES") {
+      query = query.eq("serie", serie);
+    } else {
+      query = query.eq("serie", "UNICA");
+    }
+
+    const { data } = await query.order("puntos", { ascending: false });
+    if (data) setEquipos(data);
   }
 
+  // Si cambias a DAMAS o MASTER, forzar serie a UNICA
+  useEffect(() => {
+    if (categoria!== "VARONES") {
+      setSerie("UNICA");
+    } else if (serie === "UNICA") {
+      setSerie("A"); // Default a Serie A
+    }
+  }, [categoria]);
+
   return (
-    <main className="min-h-screen bg-gray-950 text-gray-100">
-      <header className="bg-gray-900 border-b border-gray-800 px-6 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Image 
-              src="/logo.jpeg" 
-              alt="ESCUDO LIGA DEPORTIVA SAYAUSI" 
-              width={45}
-              height={45}
-              className="object-contain bg-white rounded-full p-1"
-            />
-            <div>
-              <h1 className="text-lg font-bold text-white">LIGA DEPORTIVA</h1>
-              <p className="text-xs text-gray-400">SAYAUSI</p>
-            </div>
-          </div>
-          <nav className="flex items-center gap-6">
-            <a href="#" className="text-gray-300 hover:text-red-500 transition">Inicio</a>
-            <a href="#" className="text-gray-300 hover:text-red-500 transition">Tabla</a>
-            <a href="#" className="text-gray-300 hover:text-red-500 transition">Equipos</a>
-            <a href="#" className="bg-red-700 hover:bg-red-600 px-5 py-2 rounded-lg text-sm font-semibold transition">
-              Calendario
-            </a>
-          </nav>
-        </div>
-      </header>
+    <main className="min-h-screen bg-gradient-to-br from-red-700 to-red-900 text-white p-4">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-4xl font-bold text-center mb-2">
+          LIGA DEPORTIVA BARRIAL SAYAUSI
+        </h1>
+        <p className="text-center text-red-200 mb-6">Temporada 2025</p>
 
-      <div className="relative">
-        <div className="absolute inset-0 opacity-5">
-          <Image src="/logo.jpeg" alt="" fill className="object-contain object-right" />
-        </div>
-        
-        <div className="max-w-7xl mx-auto p-6 relative">
-          <h2 className="text-4xl font-bold mb-6 text-white">LIGA DEPORTIVA SAYAUSI</h2>
-          
-          <div className="flex gap-3 flex-wrap mb-8">
-            <button className="bg-red-700 text-white px-5 py-2 rounded-lg text-sm font-semibold border-2 border-red-600">
-              Competicion
+        {/* FILTRO 1: COMPETICION */}
+        <div className="flex justify-center gap-3 mb-4">
+          {["LIGA", "COPA"].map((c) => (
+            <button
+              key={c}
+              onClick={() => setCompeticion(c)}
+              className={`px-6 py-2 rounded-lg font-bold ${
+                competicion === c
+                 ? "bg-white text-red-700"
+                  : "bg-red-800 text-white"
+              }`}
+            >
+              {c}
             </button>
-          </div>
+          ))}
+        </div>
 
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-2xl font-bold text-white">Tabla de Posiciones</h3>
-              <span className="bg-green-600 px-3 py-1 rounded text-xs font-bold">EN VIVO</span>
-            </div>
-            
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-red-700 text-white">
-                    <th className="p-3 text-left rounded-tl-lg">Pos</th>
-                    <th className="p-3 text-left">Escudo</th>
-                    <th className="p-3 text-left">Equipo</th>
-                    <th className="p-3 text-center">PJ</th>
-                    <th className="p-3 text-center">PG</th>
-                    <th className="p-3 text-center">PE</th>
-                    <th className="p-3 text-center">PP</th>
-                    <th className="p-3 text-center">GF</th>
-                    <th className="p-3 text-center">GC</th>
-                    <th className="p-3 text-center">DG</th>
-                    <th className="p-3 text-center rounded-tr-lg">Pts</th>
+        {/* FILTRO 2: CATEGORIA */}
+        <div className="flex justify-center gap-3 mb-4">
+          {["DAMAS", "MASTER", "VARONES"].map((c) => (
+            <button
+              key={c}
+              onClick={() => setCategoria(c)}
+              className={`px-6 py-2 rounded-lg font-bold ${
+                categoria === c
+                 ? "bg-white text-red-700"
+                  : "bg-red-800 text-white"
+              }`}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+
+        {/* FILTRO 3: SERIE - Solo aparece para VARONES */}
+        {categoria === "VARONES" && (
+          <div className="flex justify-center gap-3 mb-6">
+            {["A", "B", "C"].map((s) => (
+              <button
+                key={s}
+                onClick={() => setSerie(s)}
+                className={`px-6 py-2 rounded-lg font-bold ${
+                  serie === s
+                   ? "bg-white text-red-700"
+                    : "bg-red-800 text-white"
+                }`}
+              >
+                SERIE {s}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* TITULO DE LA TABLA */}
+        <h2 className="text-2xl font-bold text-center mb-4">
+          {competicion} {categoria} {categoria === "VARONES"? `SERIE ${serie}` : ""}
+        </h2>
+
+        {/* TABLA */}
+        <div className="bg-white text-black rounded-lg overflow-hidden shadow-xl">
+          <table className="w-full">
+            <thead className="bg-red-700 text-white">
+              <tr>
+                <th className="p-3 text-left">#</th>
+                <th className="p-3 text-left">Equipo</th>
+                <th className="p-3">PJ</th>
+                <th className="p-3">PG</th>
+                <th className="p-3">PE</th>
+                <th className="p-3">PP</th>
+                <th className="p-3">GF</th>
+                <th className="p-3">GC</th>
+                <th className="p-3">DG</th>
+                <th className="p-3 font-bold">PTS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {equipos.length === 0? (
+                <tr>
+                  <td colSpan={10} className="p-6 text-center text-gray-500">
+                    No hay equipos en esta categoría
+                  </td>
+                </tr>
+              ) : (
+                equipos.map((eq, i) => (
+                  <tr key={eq.id} className="border-b hover:bg-red-50">
+                    <td className="p-3 font-bold">{i + 1}</td>
+                    <td className="p-3 font-semibold">{eq.nombre}</td>
+                    <td className="p-3 text-center">{eq.pj}</td>
+                    <td className="p-3 text-center">{eq.pg}</td>
+                    <td className="p-3 text-center">{eq.pe}</td>
+                    <td className="p-3 text-center">{eq.pp}</td>
+                    <td className="p-3 text-center">{eq.gf}</td>
+                    <td className="p-3 text-center">{eq.gc}</td>
+                    <td className="p-3 text-center">{eq.gf - eq.gc}</td>
+                    <td className="p-3 text-center font-bold text-lg text-red-700">
+                      {eq.puntos}
+                    </td>
                   </tr>
-                </thead>
-                <tbody className="text-gray-300">
-                  {error ? (
-                    <tr>
-                      <td colSpan={11} className="p-6 text-center text-red-500">
-                        Error de Supabase: {error.message}
-                      </td>
-                    </tr>
-                  ) : equipos && equipos.length > 0 ? (
-                    equipos.map((equipo: Equipo, index: number) => (
-                      <tr key={equipo.id} className="border-b border-gray-800 hover:bg-red-900/20 transition">
-                        <td className="p-3 font-bold text-red-500">{index + 1}</td>
-                        <td className="p-3">
-                          {equipo.logo_url ? (
-                            <Image 
-                              src={equipo.logo_url} 
-                              alt={equipo.nombre}
-                              width={32}
-                              height={32}
-                              className="rounded-full bg-white object-contain"
-                            />
-                          ) : (
-                            <div className="w-8 h-8 bg-red-700 rounded-full flex items-center justify-center text-xs font-bold text-white">
-                              {equipo.nombre.charAt(0)}
-                            </div>
-                          )}
-                        </td>
-                        <td className="p-3 font-semibold text-white">{equipo.nombre}</td>
-                        <td className="p-3 text-center">{equipo.pj}</td>
-                        <td className="p-3 text-center">{equipo.pg}</td>
-                        <td className="p-3 text-center">{equipo.pe}</td>
-                        <td className="p-3 text-center">{equipo.pp}</td>
-                        <td className="p-3 text-center">{equipo.gf}</td>
-                        <td className="p-3 text-center">{equipo.gc}</td>
-                        <td className="p-3 text-center">{equipo.gf - equipo.gc}</td>
-                        <td className="p-3 text-center font-bold text-white">{equipo.puntos}</td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={11} className="p-6 text-center text-gray-500">
-                        No hay equipos registrados
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
-      </div>
 
-      <footer className="bg-gray-900 border-t border-gray-800 mt-12 p-8">
-        <div className="max-w-7xl mx-auto text-center text-sm text-gray-500">
-          <p>© 2026 LIGA DEPORTIVA SAYAUSI - SAYAUSI, AZUAY</p>
-          <p className="mt-2 text-red-600 font-semibold">FUNDADA EN 1970</p>
-        </div>
-      </footer>
+        <p className="text-center mt-6 text-red-200">
+          Total equipos en esta categoría: {equipos.length}
+        </p>
+      </div>
     </main>
-  )
+  );
 }
