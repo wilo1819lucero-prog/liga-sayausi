@@ -7,7 +7,6 @@ const supabase = createClient(
 )
 
 export default async function Home() {
-  // Traemos los equipos desde Supabase ordenados por puntos
   const { data: equipos, error } = await supabase
     .from('equipos')
     .select('*')
@@ -19,7 +18,6 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-gray-950 text-gray-100">
-      {/* Header */}
       <header className="bg-gray-900 border-b border-gray-800 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -47,7 +45,6 @@ export default async function Home() {
         </div>
       </header>
 
-      {/* Contenido */}
       <div className="relative">
         <div className="absolute inset-0 opacity-5">
           <Image src="/logo.jpeg" alt="" fill className="object-contain object-right" />
@@ -71,7 +68,6 @@ export default async function Home() {
             </button>
           </div>
 
-          {/* Tabla de Posiciones EN VIVO */}
           <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-2xl font-bold text-white">Tabla de Posiciones</h3>
