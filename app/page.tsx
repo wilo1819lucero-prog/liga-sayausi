@@ -4,9 +4,8 @@ import Image from 'next/image'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-// REEMPLAZA ESTAS 2 LÍNEAS CON TUS DATOS REALES DE SUPABASE → SETTINGS → API
-const supabaseUrl = 'TU_URL_AQUI'
-const supabaseKey = 'TU_KEY_AQUI'
+const supabaseUrl = 'https://vfldrqgigffnngrnvmng.supabase.co'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmbGRycWdpZ2Zmbm5ncm52bW5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MzcyMjUsImV4cCI6MjA5MzQxMzIyNX0.oSeEPjz9-HmM8r9lIQ26JuHYuTWbViJB7xor6xdtCIM'
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
@@ -28,6 +27,10 @@ export default async function Home() {
     .from('equipos')
     .select('*')
     .order('puntos', { ascending: false })
+
+  if (error) {
+    console.error('Error Supabase:', error)
+  }
 
   return (
     <main className="min-h-screen bg-gray-950 text-gray-100">
