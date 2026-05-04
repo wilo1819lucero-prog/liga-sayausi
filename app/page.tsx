@@ -7,14 +7,10 @@ const supabase = createClient(
 )
 
 export default async function Home() {
-  const { data: equipos, error } = await supabase
+  const { data: equipos } = await supabase
     .from('equipos')
     .select('*')
     .order('puntos', { ascending: false })
-
-  if (error) {
-    console.error('Error de Supabase:', error)
-  }
 
   return (
     <main className="min-h-screen bg-gray-950 text-gray-100">
@@ -33,7 +29,6 @@ export default async function Home() {
               <p className="text-xs text-gray-400">SAYAUSI</p>
             </div>
           </div>
-          
           <nav className="flex items-center gap-6">
             <a href="#" className="text-gray-300 hover:text-red-500 transition">Inicio</a>
             <a href="#" className="text-gray-300 hover:text-red-500 transition">Tabla</a>
@@ -56,15 +51,6 @@ export default async function Home() {
           <div className="flex gap-3 flex-wrap mb-8">
             <button className="bg-red-700 text-white px-5 py-2 rounded-lg text-sm font-semibold border-2 border-red-600">
               Competicion
-            </button>
-            <button className="bg-gray-800 border border-gray-700 px-5 py-2 rounded-lg text-sm hover:border-red-700 transition">
-              Goleadores
-            </button>
-            <button className="bg-gray-800 border border-gray-700 px-5 py-2 rounded-lg text-sm hover:border-red-700 transition">
-              Equipos
-            </button>
-            <button className="bg-gray-800 border border-gray-700 px-5 py-2 rounded-lg text-sm hover:border-red-700 transition">
-              Sanciones
             </button>
           </div>
 
@@ -93,7 +79,7 @@ export default async function Home() {
                 </thead>
                 <tbody className="text-gray-300">
                   {equipos && equipos.length > 0 ? (
-                    equipos.map((equipo, index) => (
+                    equipos.map((equipo: any, index: number) => (
                       <tr key={equipo.id} className="border-b border-gray-800 hover:bg-red-900/20 transition">
                         <td className="p-3 font-bold text-red-500">{index + 1}</td>
                         <td className="p-3">
