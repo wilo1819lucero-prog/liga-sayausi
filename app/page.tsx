@@ -6,6 +6,19 @@ const supabase = createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmbGRyYWdqZ3Jmbm5nbnZtbnZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5ODkzODMsImV4cCI6MjA2MDU2NTM4M30.nDy3gX4HwQJ8CbPxlfgo20ZgOZpmMWWS-IzQps5f1Sw'
 )
 
+type Equipo = {
+  id: number
+  nombre: string
+  logo_url: string | null
+  pj: number
+  pg: number
+  pe: number
+  pp: number
+  gf: number
+  gc: number
+  puntos: number
+}
+
 export default async function Home() {
   const { data: equipos } = await supabase
     .from('equipos')
@@ -79,7 +92,7 @@ export default async function Home() {
                 </thead>
                 <tbody className="text-gray-300">
                   {equipos && equipos.length > 0 ? (
-                    equipos.map((equipo: any, index: number) => (
+                    equipos.map((equipo: Equipo, index: number) => (
                       <tr key={equipo.id} className="border-b border-gray-800 hover:bg-red-900/20 transition">
                         <td className="p-3 font-bold text-red-500">{index + 1}</td>
                         <td className="p-3">
