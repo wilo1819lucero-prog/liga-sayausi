@@ -1,11 +1,18 @@
 export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50">
-      {/* Encabezado */}
+      {/* Encabezado con logo */}
       <header className="bg-green-700 text-white p-6 shadow-lg">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl font-bold">LIGA DEPORTIVA SAYAUSI</h1>
-          <p className="text-green-100 mt-1">FUTBOL, UNION Y COMUNIDAD</p>
+        <div className="max-w-6xl mx-auto flex items-center gap-4">
+          <img 
+            src="/logo.jpeg" 
+            alt="ESCUDO LIGA DEPORTIVA SAYAUSI" 
+            className="h-16 w-16 object-contain bg-white rounded-full p-1"
+          />
+          <div>
+            <h1 className="text-3xl font-bold">LIGA DEPORTIVA SAYAUSI</h1>
+            <p className="text-green-100 mt-1">FUTBOL, UNION Y COMUNIDAD</p>
+          </div>
         </div>
       </header>
 
