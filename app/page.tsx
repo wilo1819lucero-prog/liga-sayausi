@@ -1,13 +1,18 @@
+import Image from 'next/image'
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Encabezado con logo */}
       <header className="bg-green-700 text-white p-6 shadow-lg">
         <div className="max-w-6xl mx-auto flex items-center gap-4">
-          <img 
+          <Image 
             src="/logo.jpeg" 
             alt="ESCUDO LIGA DEPORTIVA SAYAUSI" 
-            className="h-16 w-16 object-contain bg-white rounded-full p-1"
+            width={64}
+            height={64}
+            className="object-contain bg-white rounded-full p-1"
+            priority
           />
           <div>
             <h1 className="text-3xl font-bold">LIGA DEPORTIVA SAYAUSI</h1>
