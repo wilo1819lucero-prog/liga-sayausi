@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
-// IMPORTANTE: REEMPLAZA ESTAS 2 LÍNEAS CON TUS DATOS REALES DE SUPABASE
-const supabaseUrl = "https://TU_PROYECTO.supabase.co";
-const supabaseAnonKey = "TU_ANON_KEY";
+// CREDENCIALES DE WILLIAM - YA ESTÁN LISTAS
+const supabaseUrl = "https://vflderqgiffnngrnvmng.supabase.co";
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmbGRycWdpZ2Zmbm5ncm52bW5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MzcyMjUsImV4cCI6MjA5MzQxMzIyNX0.oSeEPjz9-HmM8r9lIQ26JuHYuTWbViJB7xor6xdtCIM";
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -55,7 +55,6 @@ export default function Home() {
       console.error('ERROR SUPABASE:', error);
       setEquipos([]);
     } else {
-      console.log('EQUIPOS CARGADOS:', data);
       setEquipos(data || []);
     }
     setCargando(false);
@@ -77,7 +76,6 @@ export default function Home() {
         </h1>
         <p className="text-center text-red-200 mb-6 text-lg">Temporada 2025</p>
 
-        {/* FILTRO 1: COMPETICION */}
         <div className="flex justify-center gap-3 mb-4 flex-wrap">
           {["LIGA", "COPA"].map((c) => (
             <button
@@ -94,7 +92,6 @@ export default function Home() {
           ))}
         </div>
 
-        {/* FILTRO 2: CATEGORIA */}
         <div className="flex justify-center gap-3 mb-4 flex-wrap">
           {["DAMAS", "MASTER", "VARONES"].map((c) => (
             <button
@@ -111,7 +108,6 @@ export default function Home() {
           ))}
         </div>
 
-        {/* FILTRO 3: SERIE - Solo aparece para VARONES */}
         {categoria === "VARONES" && (
           <div className="flex justify-center gap-3 mb-6 flex-wrap">
             {["A", "B", "C"].map((s) => (
@@ -130,12 +126,10 @@ export default function Home() {
           </div>
         )}
 
-        {/* TITULO DE LA TABLA */}
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">
           {competicion} {categoria} {categoria === "VARONES"? `SERIE ${serie}` : ""}
         </h2>
 
-        {/* TABLA */}
         <div className="bg-white text-black rounded-lg overflow-x-auto shadow-2xl">
           <table className="w-full min-w-">
             <thead className="bg-red-700 text-white">
